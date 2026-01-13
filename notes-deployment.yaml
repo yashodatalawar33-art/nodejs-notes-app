@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notes-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notes-app
+  template:
+    metadata:
+      labels:
+        app: notes-app
+    spec:
+      containers:
+      - name: notes-app
+        image: notes-app
+        imagePullPolicy: Never
+
+        ports:
+        - containerPort: 5000
+
+        env:
+        - name: MONGODB_URI
+          value: mongodb://mongo:27017/notesdb
+        - name: PORT
+          value: "5000"
+        - name: NODE_ENV
+          value: development
+
+        command: ["/bin/sh", "-c"]
+        args:
+          - sleep 15 && npm run dev
